@@ -8,3 +8,9 @@ RUN pip install --no-cache-dir -U pip && \
 
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+
+FROM build AS dev-envs
+RUN apk update && \
+    apk add git
+
+WORKDIR /workspace/app

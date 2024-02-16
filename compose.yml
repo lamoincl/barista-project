@@ -22,12 +22,14 @@ services:
 
   django:
     build:
+      target: dev-envs
       context: ./app/
       dockerfile: Dockerfile
     image: django-barista:latest
     restart: unless-stopped
     volumes:
-      - ./app:/app
+      # - ./app:/app
+      - ./:/workspace
     ports:
       - "8080:8000"
     depends_on:
