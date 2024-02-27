@@ -55,7 +55,8 @@ class InjectionView(View):
     template_name = 'injection.html'
 
     def get(self, request, db_name):
-        return render(request, self.template_name, {'db_name': db_name})
+        time = init_neo4j()
+        return render(request, self.template_name, {'db_name': db_name, 'time': time})
 
 class ResearchView(View):
     template_name = 'research.html'
