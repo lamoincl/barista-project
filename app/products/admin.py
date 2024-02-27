@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django_neomodel import admin as neo_admin
 
-from .models import SGBDRProduct as SGBSDRProduct
+from .models import PostgresProduct
 from .neomodels import NeoProduct as NeoProduct
 
-admin.site.register(SGBSDRProduct)
+admin.site.register(PostgresProduct)
 
 
 class NeoProductAdmin(admin.ModelAdmin):

@@ -9,6 +9,7 @@ services:
       POSTGRES_PASSWORD: z9BIE3A2tNHJJqXY
       POSTGRES_DB: postgres
     volumes:
+      - ./app/shared:/barista
       - postgres-data:/var/lib/postgresql/data
 
   neo4j:
@@ -18,7 +19,11 @@ services:
       - "7474:7474"
       - "7687:7687"
     volumes:
+      - ./app/shared:/var/lib/neo4j/import
       - neo4j-data:/data
+    environment:
+      NEO4J_server_memory_pagecache_size: 2G
+      NEO4J_server_memory_heap_max__size: 2G
 
   django:
     build:
@@ -30,6 +35,7 @@ services:
     volumes:
       # - ./app:/app
       - ./:/workspace
+      - ./app/shared:/workspace/app/shared
     ports:
       - "8080:8000"
     depends_on:

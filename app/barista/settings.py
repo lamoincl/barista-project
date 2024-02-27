@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_ROOT = BASE_DIR.joinpath("media")
 
 
 # Quick-start development settings - unsuitable for production
@@ -131,6 +132,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Neo4j
 NEOMODEL_NEO4J_BOLT_URL = 'bolt://neo4j:pVc~,n84wpt#rgU@neo4j:7687'
-NEOMODEL_SIGNALS = True
+NEOMODEL_SIGNALS = False
 NEOMODEL_FORCE_TIMEZONE = False
 NEOMODEL_MAX_CONNECTION_POOL_SIZE = 50
