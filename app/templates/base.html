@@ -12,6 +12,15 @@
             {{ form.as_p }}
             <p> Utilisateurs : {{ no_lines_users }}</p>
             <p> Produits : {{ no_lines_products }}</p>
+            {% if no_lines_products == 0 and no_lines_products == 0%}
+            <div>
+                <p>Attention !!! Vous devez générer des utilisateurs et des produits avant de continuer</p>
+                <button type="submit" name="generate" value="generate">Générer</button>
+            </div>
+            {% endif %}
+            {% if time %}
+            <p>Génération terminée en : {{ time }} secondes</p>
+            {% endif %}
         {% endif %}
         <button type="submit">Suivant</button>
     </form>

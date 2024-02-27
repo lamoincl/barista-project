@@ -4,16 +4,19 @@ from barista.select import SelectBddAndRequest, SelectProduitAndNiveauNeo, Selec
 import os 
 import csv
 from barista.utils import generate_csv
+from barista.neo4j import init_neo4j, request1, request2, request3
 
 class HomeView(View):
     template_name = 'base.html'
     
     def get(self, request):
         dir = os.listdir('./shared')
+        form = SelectBddAndRequest()
         if len(dir) == 0:
-            generate_csv(1_000_000, 10_000)
+            #generate_csv(1_000_000, 10_000)
+            no_lines_products = 0
+            no_lines_users = 0
         else:
-            form = SelectBddAndRequest()
             reader = csv.reader(open("./shared/users.csv"))
             no_lines_users= len(list(reader))
             reader = csv.reader(open("./shared/products.csv"))
@@ -21,6 +24,15 @@ class HomeView(View):
         return render(request, self.template_name, {'form': form, 'etape': 1, 'no_lines_users': no_lines_users, 'no_lines_products': no_lines_products})
     
     def post(self, request):
+        if 'generate' in request.POST:
+            time = generate_csv(1_000_000, 10_000)
+            reader = csv.reader(open("./shared/users.csv"))
+            no_lines_users= len(list(reader))
+            reader = csv.reader(open("./shared/products.csv"))
+            no_lines_products = len(list(reader))
+            form = SelectBddAndRequest()
+
+            return render(request, self.template_name, {'form': form, 'etape': 1, 'no_lines_users': no_lines_users, 'no_lines_products': no_lines_products, 'time': time})
         form = SelectBddAndRequest(request.POST)
         if form.is_valid():
             db = form.cleaned_data['ma_select_box1']
@@ -66,6 +78,8 @@ class Request1View(View):
     template_name = "request1.html"
         
     def get(self, request, db_name):
+        time, result, col_names = request1(1)
+        
         if db_name == 'Neo4j':
             form = SelectUtilisateurNeo()
             
