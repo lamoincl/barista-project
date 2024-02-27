@@ -12,11 +12,6 @@ class SelectBddAndRequest(forms.Form):
     ma_select_box1 = forms.ChoiceField(choices=CHOIX1, label='Choissisez une base de données :', required=True)
     ma_select_box2 = forms.ChoiceField(choices=CHOIX2, label='Choissisez une action à réaliser :', required=True)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=1)
-
-class SelectInjection(forms.Form):
-    ma_select_box3 = forms.IntegerField(label='Nombre d utilisateurs :')
-    ma_select_box4 = forms.IntegerField(label='Nombre de produits :')
-    etape = forms.IntegerField(widget=forms.HiddenInput(), initial=2)
     
 class SelectRecherche(forms.Form):
     CHOIX3 = (        
@@ -42,4 +37,3 @@ class SelectProduitNeo(forms.Form):
     ma_select_box11 = forms.IntegerField(label='Niveau :')
     ma_select_box12 = forms.CharField(label='Nom du produit :', max_length=100)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=6)
-    

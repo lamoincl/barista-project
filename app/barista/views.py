@@ -1,51 +1,91 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
-from barista.select import SelectBddAndRequest, SelectInjection, SelectRecherche, SelectProduitAndNiveauNeo, SelectUtilisateurNeo, SelectProduitNeo
+from barista.select import SelectBddAndRequest, SelectProduitAndNiveauNeo, SelectProduitNeo, SelectRecherche, SelectUtilisateurNeo
+import os 
+import csv
+from barista.utils import generate_csv
 
 class HomeView(View):
     template_name = 'base.html'
-
+    
     def get(self, request):
-        form = SelectBddAndRequest()
-        return render(request, self.template_name, {'form': form, 'etape': 1})
-
+        dir = os.listdir('./shared')
+        if len(dir) == 0:
+            generate_csv(1_000_000, 10_000)
+        else:
+            form = SelectBddAndRequest()
+            reader = csv.reader(open("./shared/users.csv"))
+            no_lines_users= len(list(reader))
+            reader = csv.reader(open("./shared/products.csv"))
+            no_lines_products = len(list(reader))
+        return render(request, self.template_name, {'form': form, 'etape': 1, 'no_lines_users': no_lines_users, 'no_lines_products': no_lines_products})
+    
     def post(self, request):
-        etape = int(request.POST.get('etape', '1'))
-        form = None
-        db = None
-        if etape == 1:
-            form = SelectBddAndRequest(request.POST)
-            if form.is_valid():
-                request.session['db'] = form.cleaned_data['ma_select_box1'] # save db selected
-                if form.cleaned_data['ma_select_box2'] == '1':
-                    etape = 2
-                    form = SelectInjection(initial={'etape': etape})
-                elif form.cleaned_data['ma_select_box2'] == '2' :
-                    etape = 3
-                    form = SelectRecherche(initial={'etape': etape})                
-        elif etape == 2 :
-            form = SelectInjection(request.POST)
-            if form.is_valid():
-                pass
-        elif etape == 3 :
-            form = SelectRecherche(request.POST)
-            if form.is_valid():
-                db = request.session.get('db', None)
-                print("DATABASE ->", db)
-                if form.cleaned_data['ma_select_box5'] == '1':
-                    if db == '2': #Neo4j
-                        etape = 4
-                        form = SelectUtilisateurNeo(initial={'etape': etape})
-                elif form.cleaned_data['ma_select_box5'] == '2' :
-                    if db == '2': #Neo4j
-                        etape = 5
-                        form = SelectProduitAndNiveauNeo(initial={'etape': etape})
-                elif form.cleaned_data['ma_select_box5'] == '3' :
-                    if db == '2': #Neo4j
-                        etape = 6
-                        form = SelectProduitNeo(initial={'etape': etape})
-                pass
-        if not form:
-            form = SelectBddAndRequest() if etape == 1 else SelectInjection()
+        form = SelectBddAndRequest(request.POST)
+        if form.is_valid():
+            db = form.cleaned_data['ma_select_box1']
+            option = form.cleaned_data['ma_select_box2']
+            if option == '1':
+                if db == '1':
+                    db_name = 'Postgresql'   
+                elif db == '2':
+                    db_name = 'Neo4j'
+                return redirect('injection_url', db_name)
+            elif option == '2':
+                if db == '1':
+                    db_name = 'Postgresql'   
+                elif db == '2':
+                    db_name = 'Neo4j'
+                return redirect('recherche_url', db_name)
+        
+        
+class InjectionView(View):
+    template_name = 'injection.html'
 
-        return render(request, self.template_name, {'form': form, 'etape': etape})
+    def get(self, request, db_name):
+        return render(request, self.template_name, {'db_name': db_name})
+
+class ResearchView(View):
+    template_name = 'research.html'
+
+    def get(self, request, db_name):
+        form = SelectRecherche()
+        return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 3})
+    def post(self, request, db_name):
+        form = SelectRecherche(request.POST)
+        if form.is_valid():
+            option = form.cleaned_data['ma_select_box5']
+            if option == '1':
+                return redirect('recherche1_url', db_name)
+            elif option == '2':
+                return redirect('recherche2_url', db_name)
+            elif option == '3':
+                return redirect('recherche3_url', db_name)
+    
+class Request1View(View):
+    template_name = "request1.html"
+        
+    def get(self, request, db_name):
+        if db_name == 'Neo4j':
+            form = SelectUtilisateurNeo()
+            
+            return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 4})
+    
+class Request2View(View):
+    template_name = "request2.html"
+        
+    def get(self, request, db_name):
+            if db_name == 'Neo4j':
+                form = SelectProduitAndNiveauNeo()
+            
+                return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 5})
+            
+class Request3View(View):
+    template_name = "request3.html"
+        
+    def get(self, request, db_name):
+            if db_name == 'Neo4j':
+                form = SelectProduitNeo()
+            
+                return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 6})
+    

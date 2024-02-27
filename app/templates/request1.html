@@ -5,13 +5,11 @@
     <title>Barista Project</title>
 </head>
 <body>
-    <h1>Barista Project</h1>
+    <h1>Requête 1 sur la base {{db_name}}</h1>
     <form method="post">
         {% csrf_token %}
-        {% if etape == 1 %}
+        {% if etape == 4 %}
             {{ form.as_p }}
-            <p> Utilisateurs : {{ no_lines_users }}</p>
-            <p> Produits : {{ no_lines_products }}</p>
         {% endif %}
         <button type="submit">Suivant</button>
     </form>
