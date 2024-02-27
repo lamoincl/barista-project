@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from barista.select import SelectBddAndRequest, SelectInjection, SelectRecherche, SelectProduitAndNiveauNeo, SelectNiveauNeo, SelectProduitNeo
+from barista.select import SelectBddAndRequest, SelectInjection, SelectRecherche, SelectProduitAndNiveauNeo, SelectUtilisateurNeo, SelectProduitNeo
 
 class HomeView(View):
     template_name = 'base.html'
@@ -32,15 +32,15 @@ class HomeView(View):
             if form.is_valid():
                 db = request.session.get('db', None)
                 print("DATABASE ->", db)
-                if form.cleaned_data['ma_select_box4'] == '1':
+                if form.cleaned_data['ma_select_box5'] == '1':
                     if db == '2': #Neo4j
                         etape = 4
-                        form = SelectNiveauNeo(initial={'etape': etape})
-                elif form.cleaned_data['ma_select_box4'] == '2' :
+                        form = SelectUtilisateurNeo(initial={'etape': etape})
+                elif form.cleaned_data['ma_select_box5'] == '2' :
                     if db == '2': #Neo4j
                         etape = 5
                         form = SelectProduitAndNiveauNeo(initial={'etape': etape})
-                elif form.cleaned_data['ma_select_box4'] == '3' :
+                elif form.cleaned_data['ma_select_box5'] == '3' :
                     if db == '2': #Neo4j
                         etape = 6
                         form = SelectProduitNeo(initial={'etape': etape})
