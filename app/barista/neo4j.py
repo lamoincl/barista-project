@@ -69,7 +69,11 @@ def request1(user_id: int, max_level: int = 4):
         "RETURN level, orders, p.id AS productId, p.name AS productName\n"
         "ORDER BY level, orders DESC"
     )
-    return db.cypher_query(query, params)
+
+    start_time = time.time()
+    rows, _meta = db.cypher_query(query, params)
+    end_time = time.time()
+    return int(end_time - start_time), rows, _meta
 
 
 def request2(product_id: int, user_id: int, max_level: int = 4):
@@ -82,7 +86,11 @@ def request2(product_id: int, user_id: int, max_level: int = 4):
         "RETURN level, orders, p.id AS productId, p.name AS productName\n"
         "ORDER BY level, orders DESC"
     )
-    return db.cypher_query(query, params)
+
+    start_time = time.time()
+    rows, _meta = db.cypher_query(query, params)
+    end_time = time.time()
+    return int(end_time - start_time), rows, _meta
 
 
 def request3(product_id: int, max_level: int = 4):
@@ -94,4 +102,8 @@ def request3(product_id: int, max_level: int = 4):
         "RETURN LENGTH(path) AS level, COUNT(DISTINCT follower) AS viralCount\n"
         "ORDER BY level"
     )
-    return db.cypher_query(query, params)
+
+    start_time = time.time()
+    rows, _meta = db.cypher_query(query, params)
+    end_time = time.time()
+    return int(end_time - start_time), rows, _meta
