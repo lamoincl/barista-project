@@ -11,7 +11,15 @@
         {% if etape == 1 %}
             {{ form.as_p }}
         {% elif etape == 2 %}
-            {{ form2.as_p}}
+            {{ form.as_p}}
+        {% elif etape == 3 %}
+            {{ form.as_p }}
+        {% elif etape == 4 %}
+            {{ form.as_p }}
+        {% elif etape == 5 %}
+            {{ form.as_p }}
+        {% elif etape == 6 %}
+            {{ form.as_p }}
         {% endif %}
         <button type="submit">Suivant</button>
     </form>
