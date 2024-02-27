@@ -15,6 +15,7 @@ class SelectBddAndRequest(forms.Form):
 
 class SelectInjection(forms.Form):
     ma_select_box3 = forms.IntegerField(label='Nombre d utilisateurs :')
+    ma_select_box4 = forms.IntegerField(label='Nombre de produits :')
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=2)
     
 class SelectRecherche(forms.Form):
@@ -23,16 +24,16 @@ class SelectRecherche(forms.Form):
         ('2','Un Produit en fonction du niveau'),
         ('3','Un Produit spécifique'),
     )
-    ma_select_box4 = forms.ChoiceField(choices=CHOIX3, label='Choissisez une action à réaliser :', required=True)
+    ma_select_box5 = forms.ChoiceField(choices=CHOIX3, label='Choissisez une action à réaliser :', required=True)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=3)
     
 class SelectNiveauNeo(forms.Form):
-    ma_select_box5 = forms.IntegerField(label='Niveau :')
+    ma_select_box6 = forms.IntegerField(label='Niveau :')
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=4)
     
 class SelectProduitAndNiveauNeo(forms.Form):
-    ma_select_box6 = forms.IntegerField(label='Niveau :')
-    ma_select_box7 = forms.CharField(label='Nom du produit :', max_length=100)
+    ma_select_box7 = forms.IntegerField(label='Niveau :')
+    ma_select_box8 = forms.CharField(label='Nom du produit :', max_length=100)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=5)
 
 class SelectProduitNeo(forms.Form):
