@@ -11,6 +11,6 @@ CMD ["manage.py", "runserver", "0.0.0.0:8000"]
 
 FROM build AS dev-envs
 RUN apk update && \
-    apk add git
+    apk add git postgresql-client
 
 WORKDIR /workspace/app

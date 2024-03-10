@@ -1,18 +1,17 @@
+from random import randrange
 import factory
-from decimal import Decimal
 
 from django.db import models
 
 
 class PostgresProduct(models.Model):
     name = models.CharField(verbose_name="Name")
-    price = models.DecimalField(
-        max_digits=7, decimal_places=2, verbose_name="Prix")
+    price = models.PositiveIntegerField(verbose_name="Prix")
 
 
-class PostgresProductFactory(factory.Factory):
+class PostgresProductFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PostgresProduct
 
     name = factory.Faker("word")
-    price = factory.Faker("random_number")
+    price = factory.LazyFunction(lambda: randrange(1, 1500))

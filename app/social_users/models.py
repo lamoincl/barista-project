@@ -19,7 +19,7 @@ class PostgresUser(models.Model):
     )
 
 
-class PostgresUserFactory(factory.Factory):
+class PostgresUserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PostgresUser
 

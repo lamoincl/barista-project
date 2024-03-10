@@ -27,11 +27,13 @@ def generate_follow_csv(row_nb):
         writer = csv.writer(file)
 
         for i in range(1, row_nb + 1):
+            followed = list()
             for j in range(randrange(0, 21)):
                 f = randrange(1, row_nb + 1)
-                while i == f:
+                while i == f or f in followed:
                     f = randrange(1, row_nb + 1)
                 writer.writerow([i, f])
+                followed.append(f)
 
 
 def generate_buy_csv(users_nb, products_nb):
@@ -39,8 +41,13 @@ def generate_buy_csv(users_nb, products_nb):
         writer = csv.writer(file)
 
         for i in range(1, users_nb + 1):
+            buyed = list()
             for j in range(randrange(0, 6)):
-                writer.writerow([i, randrange(1, products_nb + 1)])
+                b = randrange(1, products_nb + 1)
+                while b in buyed:
+                    b = randrange(1, products_nb + 1)
+                writer.writerow([i, b])
+                buyed.append(b)
 
 
 def generate_csv(users_nb, products_nb) -> int:

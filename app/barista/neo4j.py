@@ -79,7 +79,7 @@ def request1(user_id: int, max_level: int = 4):
 def request2(product_id: int, user_id: int, max_level: int = 4):
     params = {"productId": product_id, "userId": user_id}
     query = (
-        f"PROFILE MATCH path=(s:User {{id: $userId}})<-[:FOLLOW*1..{int(max_level)}]-(f)\n"
+        f"MATCH path=(s:User {{id: $userId}})<-[:FOLLOW*1..{int(max_level)}]-(f)\n"
         "WITH DISTINCT f, LENGTH(path) AS level\n"
         "MATCH (f)-[:BUY]->(p:Product {id: $productId})\n"
         "WITH level, p, COUNT(p) AS orders\n"
