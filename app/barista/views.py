@@ -162,10 +162,9 @@ class Request3View(View):
     template_name = "request3.html"
         
     def get(self, request, db_name):
-            if db_name == 'Neo4j':
-                form = SelectProduitNeo()
-            
-                return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 6})
+        form = SelectProduitNeo()
+    
+        return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 6})
     def post(self, request, db_name):
         form = SelectProduitNeo(request.POST)
         if db_name == 'Neo4j':
