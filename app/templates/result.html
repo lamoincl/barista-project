@@ -1,2 +1,28 @@
-<h1>Résultat</h1>
-<p>Le résultat est {{ selected_option }}</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Résultats</title>
+</head>
+<body>
+    <h2>Résultats de la requête</h2>
+    <p>Temps d'exécution : {{ time }} secondes</p>
+    <table>
+        <thead>
+            <tr>
+                {% for col_name in col_names %}
+                <th>{{ col_name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in result %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

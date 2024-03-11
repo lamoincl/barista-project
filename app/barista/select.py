@@ -24,16 +24,16 @@ class SelectRecherche(forms.Form):
     
 class SelectUtilisateurNeo(forms.Form):
     ma_select_box6 = forms.IntegerField(label='Niveau :')
-    ma_select_box7 = forms.CharField(label='Nom utilisateur :', max_length=100)
+    ma_select_box7 = forms.IntegerField(label='Id utilisateur :', max_value=1_000_000, min_value=1)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=4)
     
 class SelectProduitAndNiveauNeo(forms.Form):
     ma_select_box8 = forms.IntegerField(label='Niveau :')
-    ma_select_box9 = forms.CharField(label='Nom utilisateur :', max_length=100)
-    ma_select_box10 = forms.CharField(label='Nom du produit :', max_length=100)
+    ma_select_box9 = forms.IntegerField(label='Id utilisateur :', max_value=1_000_000, min_value=1)
+    ma_select_box10 = forms.IntegerField(label='Id produit :', max_value=10_000, min_value=1)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=5)
 
 class SelectProduitNeo(forms.Form):
     ma_select_box11 = forms.IntegerField(label='Niveau :')
-    ma_select_box12 = forms.CharField(label='Nom du produit :', max_length=100)
+    ma_select_box12 = forms.IntegerField(label='Id Produit :', max_value=10_000, min_value=1)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=6)
