@@ -53,14 +53,14 @@ class HomeView(View):
                     return redirect('injection_url', db_name)
                 elif db == '2':
                     db_name = 'Neo4j'
-                return redirect('injection_url', db_name)
+                    return redirect('injection_url', db_name)
             elif option == '2':
                 if db == '1':
                     db_name = 'Postgresql'
                     return redirect('recherche_url', db_name) 
                 elif db == '2':
                     db_name = 'Neo4j'
-                return redirect('recherche_url', db_name)
+                    return redirect('recherche_url', db_name)
             
 class GenerationView(View):
     template_name = 'generation.html'
