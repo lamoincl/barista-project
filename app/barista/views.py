@@ -4,7 +4,7 @@ from barista.select import SelectBddAndRequest, SelectProduitAndNiveauNeo, Selec
 import os 
 import csv
 from barista.utils import generate_csv
-from barista.neo4j import init_neo4j, request1, request2, request3
+from barista import postgres, neo4j
 
 class HomeView(View):
     template_name = 'base.html'
@@ -65,9 +65,14 @@ class InjectionView(View):
     template_name = 'injection.html'
 
     def get(self, request, db_name):
-        print("Début de l'injection")
-        time = init_neo4j()
-        return render(request, self.template_name, {'db_name': db_name, 'time': time})
+        if db_name == 'Neo4j':
+            print("Début de l'injection Neo4j")
+            time = neo4j.init_neo4j()
+            return render(request, self.template_name, {'db_name': db_name, 'time': time})
+        elif db_name == 'Postgresql':
+            print("Début de l'injection Postgresql")
+            time = postgres.init_postgres()
+            return render(request, self.template_name, {'db_name': db_name, 'time': time})        
 
 class ResearchView(View):
     template_name = 'research.html'
@@ -91,44 +96,67 @@ class Request1View(View):
         
     def get(self, request, db_name):
         
-        if db_name == 'Neo4j':
-            form = SelectUtilisateurNeo()
-            return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 4})
+        form = SelectUtilisateurNeo()
+        return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 4})
         
     def post(self, request, db_name):
         form = SelectUtilisateurNeo(request.POST)
-        if form.is_valid():
-            level = form.cleaned_data['ma_select_box6']
-            user_id = form.cleaned_data['ma_select_box7']
-            time, result, col_names = request1(user_id, level)
+        if db_name == 'Neo4j':
+            if form.is_valid():
+                level = form.cleaned_data['ma_select_box6']
+                user_id = form.cleaned_data['ma_select_box7']
+                time, result, col_names = neo4j.request1(user_id, level)
 
-            request.session['result'] = result
-            request.session['col_names'] = col_names
-            request.session['time'] = time
+                request.session['result'] = result
+                request.session['col_names'] = col_names
+                request.session['time'] = time
 
-            return redirect('result_url')
+                return redirect('result_url')
+        elif db_name == 'Postgresql':
+            if form.is_valid():
+                level = form.cleaned_data['ma_select_box6']
+                user_id = form.cleaned_data['ma_select_box7']
+                time, result, col_names = postgres.request1(user_id, level)
+
+                request.session['result'] = result
+                request.session['col_names'] = col_names
+                request.session['time'] = time
+
+                return redirect('result_url')
     
 class Request2View(View):
     template_name = "request2.html"
         
     def get(self, request, db_name):
-            if db_name == 'Neo4j':
-                form = SelectProduitAndNiveauNeo()
+        form = SelectProduitAndNiveauNeo()
+        return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 5})
             
-                return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 5})
     def post(self, request, db_name):
         form = SelectProduitAndNiveauNeo(request.POST)
-        if form.is_valid():
-            level = form.cleaned_data['ma_select_box8']
-            user_id = form.cleaned_data['ma_select_box9']
-            product_id = form.cleaned_data['ma_select_box10']
-            time, result, col_names = request2(product_id,user_id,level)
+        if db_name == 'Neo4j':
+            if form.is_valid():
+                level = form.cleaned_data['ma_select_box8']
+                user_id = form.cleaned_data['ma_select_box9']
+                product_id = form.cleaned_data['ma_select_box10']
+                time, result, col_names = neo4j.request2(product_id,user_id,level)
 
-            request.session['result'] = result
-            request.session['col_names'] = col_names
-            request.session['time'] = time
+                request.session['result'] = result
+                request.session['col_names'] = col_names
+                request.session['time'] = time
 
-            return redirect('result_url')
+                return redirect('result_url')
+        elif db_name == 'Postgresql':
+            if form.is_valid():
+                level = form.cleaned_data['ma_select_box8']
+                user_id = form.cleaned_data['ma_select_box9']
+                product_id = form.cleaned_data['ma_select_box10']
+                time, result, col_names = postgres.request2(product_id,user_id,level)
+
+                request.session['result'] = result
+                request.session['col_names'] = col_names
+                request.session['time'] = time
+
+                return redirect('result_url')
             
 class Request3View(View):
     template_name = "request3.html"
@@ -140,16 +168,28 @@ class Request3View(View):
                 return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 6})
     def post(self, request, db_name):
         form = SelectProduitNeo(request.POST)
-        if form.is_valid():
-            level = form.cleaned_data['ma_select_box11']
-            product_id = form.cleaned_data['ma_select_box12']
-            time, result, col_names = request3(product_id,level)
+        if db_name == 'Neo4j':
+            if form.is_valid():
+                level = form.cleaned_data['ma_select_box11']
+                product_id = form.cleaned_data['ma_select_box12']
+                time, result, col_names = neo4j.request3(product_id,level)
 
-            request.session['result'] = result
-            request.session['col_names'] = col_names
-            request.session['time'] = time
+                request.session['result'] = result
+                request.session['col_names'] = col_names
+                request.session['time'] = time
 
-            return redirect('result_url')
+                return redirect('result_url')
+        elif db_name == 'Postgresql':
+            if form.is_valid():
+                level = form.cleaned_data['ma_select_box11']
+                product_id = form.cleaned_data['ma_select_box12']
+                time, result, col_names = postgres.request3(product_id,level)
+
+                request.session['result'] = result
+                request.session['col_names'] = col_names
+                request.session['time'] = time
+
+                return redirect('result_url')
             
 class ResultView(View):
         template_name = 'result.html'
