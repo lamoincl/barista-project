@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Barista Project</title>
+</head>
+<body>
+    <h1>Requête 3 sur la base {{db_name}}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% if etape == 6 %}
+            {{ form.as_p }}
+        {% endif %}
+        <button type="submit">Suivant</button>
+    </form>
+</body>
+</html>
