@@ -32,7 +32,8 @@ def inject_csv():
 def init_postgres():
     call_command("flush", interactive=False)
     with connection.cursor() as cursor:
-        cursor.execute("""
+        try:
+            cursor.execute("""
 CREATE INDEX idx_social_users_postgresuser_id ON social_users_postgresuser(id);
 CREATE INDEX idx_social_users_postgresuser_users_from_id ON social_users_postgresuser_users(from_postgresuser_id);
 CREATE INDEX idx_social_users_postgresuser_users_to_id ON social_users_postgresuser_users(to_postgresuser_id);
@@ -40,6 +41,8 @@ CREATE INDEX idx_social_users_postgresuser_products_user_id ON social_users_post
 CREATE INDEX idx_social_users_postgresuser_products_product_id ON social_users_postgresuser_products(postgresproduct_id);
 CREATE INDEX idx_products_postgresproduct_id ON products_postgresproduct(id);
 """)
+        except:
+            pass
     return inject_csv()
 
 def request1(user_id: int, max_level: int = 4):
