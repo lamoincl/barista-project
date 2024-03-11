@@ -10,6 +10,8 @@
         {% csrf_token %}
         {% if etape == 1 %}
             {{ form.as_p }}
+            <button type="submit">Suivant</button>
+            <p> Données actuelles :</p>
             <p> Utilisateurs : {{ no_lines_users }}</p>
             <p> Produits : {{ no_lines_products }}</p>
             {% if no_lines_products == 0 and no_lines_products == 0%}
@@ -21,8 +23,14 @@
             {% if time %}
             <p>Génération terminée en : {{ time }} secondes</p>
             {% endif %}
+            <button type="button" id="generateButton">Générer</button>
         {% endif %}
-        <button type="submit">Suivant</button>
     </form>
 </body>
 </html>
+<script type="text/javascript">
+    document.getElementById('generateButton').addEventListener('click', function() {
+        window.location.href = "{% url 'generation_url' %}";
+    });
+</script>
+
