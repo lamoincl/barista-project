@@ -5,11 +5,11 @@
     <title>Barista Project</title>
 </head>
 <body>
-    <h1>Requête 2 sur la base {{db_name}}</h1>
+    <h1>Injection sur la base {{db_name}}</h1>
     <a href="{%url 'home'%}" class="btn btn-primary">Retour à l'accueil</a>
     <form method="post">
         {% csrf_token %}
-        {% if etape == 5 %}
+        {% if etape == 2 %}
             {{ form.as_p }}
         {% endif %}
         <button type="submit">Suivant</button>

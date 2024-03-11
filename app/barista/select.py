@@ -37,3 +37,8 @@ class SelectProduitNeo(forms.Form):
     ma_select_box11 = forms.IntegerField(label='Niveau :')
     ma_select_box12 = forms.IntegerField(label='Id Produit :', max_value=10_000, min_value=1)
     etape = forms.IntegerField(widget=forms.HiddenInput(), initial=6)
+
+class SelectInjection(forms.Form):
+    ma_select_box3 = forms.IntegerField(label='Nombre d utilisateurs :', min_value=1)
+    ma_select_box4 = forms.IntegerField(label='Nombre de produits :', min_value=1)
+    etape = forms.IntegerField(widget=forms.HiddenInput(), initial=2)

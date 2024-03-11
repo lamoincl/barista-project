@@ -4,6 +4,7 @@
     <title>Résultats</title>
 </head>
 <body>
+    <a href="{%url 'home'%}" class="btn btn-primary">Retour à l'accueil</a>
     <h2>Résultats de la requête</h2>
     <p>Temps d'exécution : {{ time }} secondes</p>
     <table>
@@ -24,6 +25,5 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{%url 'home'%}" class="btn btn-primary">Retour à l'accueil</a>
 </body>
 </html>
