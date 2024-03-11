@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     path('injection/<str:db_name>/', InjectionView.as_view(), name='injection_url'),
+    path('injection/<str:db_name>/result', ResearchView.as_view(), name='injection_result_url'),
     path('recherche/<str:db_name>/', ResearchView.as_view(), name='recherche_url'),
     path('recherche/<str:db_name>/req1', Request1View.as_view(), name='recherche1_url'),
     path('recherche/<str:db_name>/req2', Request2View.as_view(), name='recherche2_url'),
