@@ -116,6 +116,19 @@ class Request2View(View):
                 form = SelectProduitAndNiveauNeo()
             
                 return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 5})
+    def post(self, request, db_name):
+        form = SelectProduitAndNiveauNeo(request.POST)
+        if form.is_valid():
+            level = form.cleaned_data['ma_select_box8']
+            user_id = form.cleaned_data['ma_select_box9']
+            product_id = form.cleaned_data['ma_select_box10']
+            time, result, col_names = request2(product_id,user_id,level)
+
+            request.session['result'] = result
+            request.session['col_names'] = col_names
+            request.session['time'] = time
+
+            return redirect('result_url')
             
 class Request3View(View):
     template_name = "request3.html"
@@ -125,6 +138,18 @@ class Request3View(View):
                 form = SelectProduitNeo()
             
                 return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 6})
+    def post(self, request, db_name):
+        form = SelectProduitNeo(request.POST)
+        if form.is_valid():
+            level = form.cleaned_data['ma_select_box11']
+            product_id = form.cleaned_data['ma_select_box12']
+            time, result, col_names = request3(product_id,level)
+
+            request.session['result'] = result
+            request.session['col_names'] = col_names
+            request.session['time'] = time
+
+            return redirect('result_url')
             
 class ResultView(View):
         template_name = 'result.html'
