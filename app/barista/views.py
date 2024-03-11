@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from barista.select import SelectBddAndRequest, SelectProduitAndNiveauNeo, SelectProduitNeo, SelectRecherche, SelectUtilisateurNeo, SelectInjection
+from barista.select import SelectBddAndRequest, SelectProduitAndNiveauNeo, SelectProduitNeo, SelectRecherche, SelectUtilisateurNeo, SelectGeneration
 import os 
 import csv
 from barista.utils import generate_csv
@@ -49,48 +49,58 @@ class HomeView(View):
             option = form.cleaned_data['ma_select_box2']
             if option == '1':
                 if db == '1':
-                    db_name = 'Postgresql'   
+                    db_name = 'Postgresql'
+                    return redirect('injection_url', db_name)
                 elif db == '2':
                     db_name = 'Neo4j'
                 return redirect('injection_url', db_name)
             elif option == '2':
                 if db == '1':
-                    db_name = 'Postgresql'   
+                    db_name = 'Postgresql'
+                    return redirect('recherche_url', db_name) 
                 elif db == '2':
                     db_name = 'Neo4j'
                 return redirect('recherche_url', db_name)
-        
-        
-class InjectionView(View):
-    template_name = 'injection_form.html'
+            
+class GenerationView(View):
+    template_name = 'generation.html'
     
-    def get(self, request, db_name):
-        form = SelectInjection()
-        return render(request, self.template_name, {'db_name': db_name, 'form': form, 'etape': 2})
-
-    def post(self, request, db_name):
-        form = SelectInjection(request.POST)
+    def get(self, request):
+        form = SelectGeneration()
+        return render(request, self.template_name, {'form': form, 'etape': 2})
+    def post(self, request):
+        form = SelectGeneration(request.POST)
         if form.is_valid():
             nb_user = form.cleaned_data['ma_select_box3']
             nb_product = form.cleaned_data['ma_select_box4']
-            generate_csv(nb_user,nb_product)
-            if db_name == 'Neo4j':
-                print("Début de l'injection Neo4j")
-                time = neo4j.init_neo4j()
-                request.session['time'] = time
-                redirect('injection_result_url')
-            elif db_name == 'Postgresql':
-                print("Début de l'injection Postgresql")
-                time = postgres.init_postgres()
-                request.session['time'] = time
-                redirect('injection_result_url')
-
-class InjectionResultView(View):
-    template_name = 'injection_result.html'
+            time = generate_csv(nb_user,nb_product)
+            request.session['time'] = time
+            return redirect('generation_result_url')
+            
+class GenerationResultView(View):
+    template_name = 'generation_result.html'
 
     def get(self, request):
         time = request.session.get('time', 0)
         return render(request, self.template_name, {'time': time})
+        
+class InjectionView(View):
+    template_name = 'injection.html'
+
+    def post(self, request, db_name):
+        if db_name == 'Neo4j':
+            print("Début de l'injection Neo4j")
+            time = neo4j.init_neo4j()
+            request.session['time'] = time
+            return render(request, self.template_name, {'db_name': db_name, 'time': time})
+
+        elif db_name == 'Postgresql':
+            print("Début de l'injection Postgresql")
+            time = postgres.init_postgres()
+            request.session['time'] = time
+            return render(request, self.template_name, {'db_name': db_name, 'time': time})
+
+
     
 class ResearchView(View):
     template_name = 'research.html'
