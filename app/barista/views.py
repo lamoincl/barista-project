@@ -16,7 +16,7 @@ class HomeView(View):
         buy_file_path = 'shared/buy.csv'
 
         if not os.path.exists(users_file_path) or not os.path.exists(products_file_path) or not os.path.exists(follow_file_path) or not os.path.exists(buy_file_path):
-            generate_csv(1_000_000, 10_000)
+            generate_csv(1_000, 10)
         
         with open(users_file_path, 'r') as users_file:
             no_lines_users = len(list(csv.reader(users_file)))
