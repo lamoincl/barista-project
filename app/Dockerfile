@@ -2,7 +2,7 @@ FROM python:3.11-alpine AS build
 
 WORKDIR /app
 
-COPY . .
+COPY ./requirements.txt .
 RUN pip install --no-cache-dir -U pip && \
     pip install --no-cache-dir -r ./requirements.txt
 
